@@ -5,7 +5,8 @@ const {
 
 const twitSchema = new Schema({
   _idUser: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    ref:'User'
   },
   twitText: {
     type: String,
@@ -29,7 +30,17 @@ const twitSchema = new Schema({
     required: false,
     trim: true,
     default: ''
-  }
+  },
+  coments: [{
+    type: Schema.Types.ObjectId,
+    default: '',
+    ref:'Twit'
+  }],
+  likes: [{
+    type: Schema.Types.ObjectId,
+    default: '',
+    ref:'Twit'
+  }]
 }, {
   timestamps: true,
   versionKey: false
