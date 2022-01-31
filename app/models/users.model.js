@@ -27,6 +27,11 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    photo: {
+      type: String,
+      trim: true,
+      default:""
+    },
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -42,18 +47,22 @@ const UserSchema = new mongoose.Schema(
     twits: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Twits",
+        ref: "Twit",
       },
     ],
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Twits",
+        ref: "Comments",
       },
     ],
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    status: {
+      type: Boolean,
+      default: true,
     },
   },
   {

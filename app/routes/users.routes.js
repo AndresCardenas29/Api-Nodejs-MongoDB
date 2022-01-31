@@ -7,6 +7,7 @@ const {
   GetUsers,
   UpdateUser,
   DeleteUser,
+  UploadPhoto
 } = require("../controllers/user.controller");
 
 router.post("/", CreateUser);
@@ -19,5 +20,6 @@ router.patch("/:nickName", UpdateUser);
 
 router.delete("/:nickName", DeleteUser);
 
+router.patch("/photo", UploadPhoto);
 
 module.exports = router;

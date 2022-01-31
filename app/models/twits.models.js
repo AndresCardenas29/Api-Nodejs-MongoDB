@@ -31,15 +31,15 @@ const twitSchema = new Schema({
     trim: true,
     default: ''
   },
-  coments: [{
+  comments: [{
     type: Schema.Types.ObjectId,
     default: '',
-    ref:'Twit'
+    ref:'Comments'
   }],
   likes: [{
     type: Schema.Types.ObjectId,
     default: '',
-    ref:'Twit'
+    ref:'User'
   }]
 }, {
   timestamps: true,

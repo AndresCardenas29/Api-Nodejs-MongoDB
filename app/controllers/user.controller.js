@@ -58,7 +58,7 @@ const GetUser = async (req, res) => {
 const GetUsers = async (req, res) => {
   try {
     const getUsers = await userModel.find();
-    res.send({ data: getUsers });
+    res.send(getUsers);
   } catch (error) {
     httpError(res, error);
   }
@@ -78,7 +78,7 @@ const UpdateUser = async (req, res) => {
         name,
         lastName,
         userName,
-        nickName:req.body.nickName,
+        nickName: req.body.nickName,
         email,
         password,
       },
@@ -128,4 +128,27 @@ const DeleteUser = async (req, res) => {
   }
 };
 
-module.exports = { CreateUser, GetUser, GetUsers, UpdateUser, DeleteUser };
+const UploadPhoto = async (req, res) => {
+  try {
+    const { nickName, urlPhoto } = req.body;
+    if (!urlPhoto) {
+      return res.send({ error: "url not found" });
+    }
+    const uploadPhoto = await userModel.findOneAndUpdate(
+      { nickName: nickName },
+      { photo: urlPhoto }
+    );
+    return res.json(uploadPhoto);
+  } catch (err) {
+    httpError(res, error);
+  }
+};
+
+module.exports = {
+  CreateUser,
+  GetUser,
+  GetUsers,
+  UpdateUser,
+  DeleteUser,
+  UploadPhoto,
+};

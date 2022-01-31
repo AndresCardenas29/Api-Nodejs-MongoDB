@@ -68,6 +68,29 @@ const CreateTwit = async (req, res) => {
   }
 };
 
+const UpdateTwit = async (req, res) => {
+  try {
+    const { _id, twitText } = req.body;
+    const searchId = await twitModel.findById(_id);
+
+    if (!searchId) {
+      return res.send({ error: "id not found" });
+    }
+
+    const updateTwit = await twitModel.findByIdAndUpdate(_id, {
+      twitText: twitText,
+    });
+
+    if (!updateTwit) {
+      return res.send({ error: "twit not updated" });
+    }
+
+    return res.send({ message: "twit updated" });
+  } catch (err) {
+    httpError(res, err);
+  }
+};
+
 const DeleteTwit = async (req, res) => {
   const { idTwit } = req.body;
 
@@ -105,7 +128,7 @@ const DeleteTwit = async (req, res) => {
 };
 
 const GetTwits = async (req, res) => {
-  const twit = await twitModel.find().populate("_idUser","nickName");
+  const twit = await twitModel.find().populate("_idUser", "nickName");
   if (!twit) {
     return res.send({
       message: "No hay twits",
@@ -130,12 +153,53 @@ const GetTwit = async (req, res) => {
 };
 
 const GetTwitFollowing = async (req, res) => {
+  // inicio y limite para poder paginar los twits
+  // amountTwits el numero de twits que uno quiere mostrar por usuario
+  const { initialUsers, amountUsers, amountTwits } = req.body;
+
+  // nombre de usuario a mostrar twits
   const { nickName } = req.params;
-  const users = await userModel.find({ nickName });
-  res.send(users);
+
+  // obtiene el usuairo
+  const user = await userModel
+    .findOne({ nickName })
+    .populate("following")
+    .populate("twits");
+
+  // se verifica si el usuario existe
+  if (!user) {
+    return res.status(404).send({ error: "User not found" });
+  }
+
+  // se obtiene los usuarios que se estan siguiendo
+  const getIdUsers = user.following.map((following) => {
+    return following._id;
+  });
+
+  // arreglo en donde se guardaran los usuarios que se les extraera los twits
+  const userShow = [];
+  // arreglo en donde se guardaran los twits que se van a mostrar
+  const twitsToShow = new Array();
+
+  // bucle para limitar la salidad de usuarios y tiwts
+  // se tomaran por mucho 5 usuarios, o menos
+  for (let i = initialUsers; i < amountUsers && i < getIdUsers.length; i++) {
+    userShow.push(getIdUsers[i]);
+    // se extraera n cantidad de tiwts que el front pida
+    twitsToShow.push(
+      await twitModel
+        .find({ _idUser: getIdUsers[i] })
+        .sort([["createdAt", -1]])
+        .skip(0)
+        .limit(amountTwits)
+        .populate("_idUser", ["name", "lastName", "photo"])
+    );
+  }
+
+  return res.json(twitsToShow);
 };
 
-// const CreateTwit = async (req, res) => {};
+// const new = async (req, res) => {};
 
 module.exports = {
   CreateTwit,
@@ -143,4 +207,5 @@ module.exports = {
   GetTwits,
   GetTwit,
   GetTwitFollowing,
+  UpdateTwit,
 };

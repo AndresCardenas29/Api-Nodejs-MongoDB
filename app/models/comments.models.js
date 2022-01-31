@@ -7,13 +7,19 @@ const comentsSchema = new Schema({
   _idUser: {
     type: Schema.Types.ObjectId
   },
-  coment: [{
+  _idTwit: {
     type: Schema.Types.ObjectId,
     required: true,
-  }]
+  },
+  comments: {
+    type: String,
+    required: true,
+    trim: true,
+    ref: 'Comments'
+  }
 }, {
   timestamps: true,
   versionKey: false
 });
 
-module.exports = model('Coments', comentsSchema);
+module.exports = model('Comments', comentsSchema);
