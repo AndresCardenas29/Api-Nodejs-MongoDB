@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const {
+  validateID,
+  validateNickName,
+} = require("../validators/validateDefault");
+const {
   follow,
   unfollow,
   followers,

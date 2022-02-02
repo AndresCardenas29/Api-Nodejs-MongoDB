@@ -40,14 +40,14 @@ const follow = async (req, res) => {
     );
 
     // Add Follower
-    // se busca el usuario y se agrega el id del seguidor
+    // look for the user and add the follower id
     const userFollower = await userModel.findOneAndUpdate(
       {
         _id: following, // se busca el id del seguidor
       },
       {
         $push: {
-          followers: userFollowing._id, // se agrega la id de quien lo sigue
+          followers: userFollowing._id, // add the id of the follower
         },
       },
       {

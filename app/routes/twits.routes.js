@@ -1,5 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const checkRoleAuth = require("../middleware/roleAuth");
+
+const {
+  validateID,
+  validateNickName,
+} = require("../validators/validateDefault");
+
+const {
+  validateCreateTwit,
+  validateUpdateTwit,
+  validateGetTwitFollowing,
+} = require("../validators/validateTwit");
 
 const {
   CreateTwit,
@@ -11,22 +23,27 @@ const {
 } = require("../controllers/twits.controller");
 
 // Crear Twit
-router.post("/", CreateTwit);
+router.post("/", validateCreateTwit, checkRoleAuth(["user"]), CreateTwit);
 
 // Editar Twit
-router.patch("/", UpdateTwit);
+router.patch("/", validateUpdateTwit, checkRoleAuth(["user"]), UpdateTwit);
 
 // Eliminar twit
-router.delete("/", DeleteTwit);
+router.delete("/", validateID, checkRoleAuth(["user"]), DeleteTwit);
 
-// er todos los twits
-router.get("/", GetTwits);
+// ver todos los twits
+router.get("/", checkRoleAuth(["admin"]), GetTwits);
 
 // Ver Twits por usuario
-router.get(`/:nickName`, GetTwit);
+router.get(`/:nickName`, validateNickName, checkRoleAuth(["user"]), GetTwit);
 
 // Ver Twits de usuarios siguiendo
-router.get(`/following/:nickName`, GetTwitFollowing);
+router.get(
+  `/following/:nickName`,
+  validateGetTwitFollowing,
+  checkRoleAuth(["user"]),
+  GetTwitFollowing
+);
 
 // comentarioos
 router.post("/api/coments", async (req, res) => {

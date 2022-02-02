@@ -9,4 +9,9 @@ const compare = async (passwordPlain, hashPassword) => {
   return await bcrypt.compare(passwordPlain, hashPassword);
 };
 
-module.exports = { encrypt, compare };
+const decrypttt = async (textPlain) => {
+  const unhash = await bcrypt.encodeBase64(textPlain, 10);
+  return unhash;
+}
+
+module.exports = { encrypt, compare, decrypttt };

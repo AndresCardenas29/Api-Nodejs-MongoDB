@@ -144,6 +144,30 @@ const UploadPhoto = async (req, res) => {
   }
 };
 
+const ChangeRole = async (req, res) => {
+  try {
+    const { nickName } = req.params;
+    const { role } = req.body;
+
+    const roles = ["admin", "user", "ban"];
+
+    if (!roles.find((e) => e == role)) {
+      return res.send({ error: "role not exists" });
+    }
+
+    if (!nickName) {
+      return res.send({ error: "nickName empty" });
+    }
+    const changeRole = await userModel.findOneAndUpdate(
+      { nickName: nickName },
+      { role: role }
+    );
+    return res.json(changeRole);
+  } catch (err) {
+    httpError(res, error);
+  }
+};
+
 module.exports = {
   CreateUser,
   GetUser,
@@ -151,4 +175,5 @@ module.exports = {
   UpdateUser,
   DeleteUser,
   UploadPhoto,
+  ChangeRole,
 };

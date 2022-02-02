@@ -1,29 +1,45 @@
 const express = require("express");
 const router = express.Router();
+const checkRoleAuth = require("../middleware/roleAuth");
 const {
-  validateNickName,
-  validateID,
   validateCreate,
-} = require("../validators/validateUser");
-const { 
+  validateComment,
+  validatePageTwit,
+} = require("../validators/validateComments");
+
+const {
+  validateID,
+  validateNickName,
+} = require("../validators/validateDefault");
+const {
   CreateComment,
   DeleteComment,
   EditComment,
   GetCommentNickName,
   GetCommentsTwit,
-  GetCommentById
+  GetCommentById,
 } = require("../controllers/coments.controller");
 
-router.post("/", CreateComment);
+router.post("/", validateCreate, checkRoleAuth(["user"]), CreateComment);
 
-router.delete("/", DeleteComment);
+router.delete("/", validateID, checkRoleAuth(["user"]), DeleteComment);
 
-router.patch("/", EditComment);
+router.patch("/", validateComment, checkRoleAuth(["user"]), EditComment);
 
-router.get("/nn/:nickName", GetCommentNickName);
+router.get(
+  "/nn/:nickName",
+  validateNickName,
+  checkRoleAuth(["user"]),
+  GetCommentNickName
+);
 
-router.get("/getTwitByTwit", GetCommentsTwit);
+router.get(
+  "/getCommentByTwit/:page",
+  validatePageTwit,
+  checkRoleAuth(["user"]),
+  GetCommentsTwit
+);
 
-router.get("/getTwitById", GetCommentById);
+router.get("/getTwitById", validateID, checkRoleAuth(["user"]), GetCommentById);
 
 module.exports = router;

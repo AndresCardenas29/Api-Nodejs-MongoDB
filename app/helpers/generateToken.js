@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken");
 
-const tokenSign = async (req, res) => {
+const tokenSign = async (user) => {
   return jwt.sign(
     {
-      _id: req._id,
-      nickName: req.nickName,
+      _id: user._id,
+      nickName: user.nickName,
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "2h",
+      expiresIn: "7d",
     }
   );
 };

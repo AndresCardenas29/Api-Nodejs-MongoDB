@@ -56,9 +56,9 @@ const UserSchema = new mongoose.Schema(
         ref: "Comments",
       },
     ],
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      default: 'user',
     },
     status: {
       type: Boolean,

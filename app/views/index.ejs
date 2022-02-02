@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Api Clon Twitter</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: rgb(15, 21, 29);
+    }
+
+    .box {
+      padding-top: 50px;
+      padding-bottom: 150px;
+    }
+
+    .page-footer {
+      background: rgb(13, 97, 167);
+    }
+
+    .page-footer .footer-copyright {
+      background-color: rgba(51, 51, 51, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container box">
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card blue-grey darken-1 z-depth-3">
+          <div class="card-content white-text">
+            <span class="card-title">Api clon Twitter</span>
+            <p>API inspirada en Twitter.</p>
+            <p>API version: <%- data.version %></p>
+            <p>Host: <%- data.urlHost %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12">
+        <ul class="collapsible">
+          <!-- Auth -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">lock_open</i>Authentication</div>
+
+            <div class="collapsible-body white-text">
+
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/auth/login</span>
+                <span class="purple darken-1">Inputs: body -> {nickName, password}</span>
+                <span>Login user</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/auth/register</span>
+                <span class="purple darken-1">Inputs: body -> {name, lastName, nickName, email, password}</span>
+                <span>Create user</span>
+              </div>
+            </div>
+
+          </li>
+          <!-- Users -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">people</i>Users</div>
+            <div class="collapsible-body white-text">
+              <div>
+                <span class="red darken-1">DEL</span>
+                <span class="teal darken-1">/api/1.0/users/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName}</span>
+                <span>Delete user</span>
+              </div>
+              <div>
+                <span class="blue darken-1">PATCH</span>
+                <span class="teal darken-1">/api/1.0/users/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName} | body -> {name, lastName, nickName, email,
+                  password}</span>
+                <span>Update user</span>
+              </div>
+              <div>
+                <span class="blue darken-1">PATCH</span>
+                <span class="teal darken-1">/api/1.0/users/role/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName} | body -> {role}</span>
+                <span>Update role to user</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/users/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName}</span>
+                <span>Get user by id</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/users</span>
+                <span>Get all users</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/users</span>
+                <span class="purple darken-1">Inputs: body -> {name, lastName, nickName, email, password}</span>
+                <span>Create user</span>
+              </div>
+          </li>
+          <!-- Follow -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">person_add</i>Follow</div>
+            <div class="collapsible-body white-text">
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/follow/following/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName}</span>
+                <span>Get user id following</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/follow/followers/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> {nickName}</span>
+                <span>Get the id of the followers users</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/follow/follow</span>
+                <span class="purple darken-1">Inputs: body -> {following:id, nickName}</span>
+                <span>Add follow to user</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/follow/unfollow</span>
+                <span class="purple darken-1">Inputs: body -> {following:id, nickName}</span>
+                <span>Remove follow to user</span>
+              </div>
+          </li>
+          <!-- Twits -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">post_add</i>Twits</div>
+            <div class="collapsible-body white-text">
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/twits</span>
+                <span>Get all twits</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/twits/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> { nickName }</span>
+                <span>Get all twits by user</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/twits/following/:nickName</span>
+                <span class="purple darken-1">Inputs: params -> { nickName } body ->
+                  { initialUsers:number, amountUsers:number, amountTwits:number }</span>
+                <span>Get all twits by users following</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/twits</span>
+                <span class="purple darken-1">Inputs: body -> { _idUser, twitText, photo, gif, ubication }</span>
+                <span>Add twit</span>
+              </div>
+              <div>
+                <span class="blue darken-1">PATCH</span>
+                <span class="teal darken-1">/api/1.0/twits</span>
+                <span class="purple darken-1">Inputs: body -> { _id:idTwit, twitText }</span>
+                <span>Update twit</span>
+              </div>
+              <div>
+                <span class="red darken-1">DEL</span>
+                <span class="teal darken-1">/api/1.0/twits</span>
+                <span class="purple darken-1">Inputs: body -> { idTwition:id }</span>
+                <span>Delete twit</span>
+              </div>
+            </div>
+          </li>
+          <!-- Comments -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">question_answer</i>Comments</div>
+            <div class="collapsible-body white-text">
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/comments</span>
+                <span class="purple darken-1">Inputs: body -> { _idUser, idTwit, comments }</span>
+                <span>Create comment</span>
+              </div>
+              <div>
+                <span class="red darken-1">DEL</span>
+                <span class="teal darken-1">/api/1.0/comments</span>
+                <span class="purple darken-1">Inputs: body -> { _idTwit }</span>
+                <span>Delete comment</span>
+              </div>
+              <div>
+                <span class="blue darken-1">PATCH</span>
+                <span class="teal darken-1">/api/1.0/comments/:nickName</span>
+                <span class="purple darken-1">Inputs: body -> { idComment, comments }</span>
+                <span>Update comment</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/comments/nn/:nickName</span>
+                <span>Get comment by nickName</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/comments/getCommentByTwit/</span>
+                <span class="purple darken-1">Inputs: body -> { idTwit }</span>
+                <span>Get comment by Twit</span>
+              </div>
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/comments/getCommentById</span>
+                <span class="purple darken-1">Inputs: body -> { idComment }</span>
+                <span>Get comment by id</span>
+              </div>
+            </div>
+          </li>
+          <!-- Like -->
+          <li>
+            <div class="collapsible-header"><i class="material-icons">favorite</i>Like</div>
+            <div class="collapsible-body white-text">
+              <div>
+                <span class="green darken-1">GET</span>
+                <span class="teal darken-1">/api/1.0/like</span>
+                <span class="purple darken-1">Inputs: body -> { idTwit }</span>
+                <span>Get all like by twit</span>
+              </div>
+              <div>
+                <span class="amber darken-1">POST</span>
+                <span class="teal darken-1">/api/1.0/users</span>
+                <span class="purple darken-1">Inputs: body -> { idUser, idTwit }</span>
+                <span>set like to twit</span>
+              </div>
+              <div>
+                <span class="red darken-1">DEL</span>
+                <span class="teal darken-1">/api/1.0/users/:nickName</span>
+                <span class="purple darken-1">Inputs: body -> { idUser, idTwit }</span>
+                <span>remove like to twit</span>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Clon Twitter Backend</h5>
+          <p class="grey-text text-lighten-4">Hecho por Andres Cardenas.</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Contacto</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" target="_blank" href="<%- data.github %>">GitHub</a></li>
+            <li><a class="grey-text text-lighten-3" target="_blank" href="<%- data.linkedin %>">LinkedIn</a></li>
+            <li><a class="grey-text text-lighten-3" target="_blank" href="<%- data.wpp %>">WhatsApp</a></li>
+            <li><a class="grey-text text-lighten-3" target="_blank" href="<%- data.telegram %>">Telegram</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Andres Cardenas© 2022 Copyright
+        <!-- <a class="grey-text text-lighten-4 right" href="#!">More Links</a> -->
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.collapsible');
+      var instances = M.Collapsible.init(elems, true);
+    });
+  </script>
+</body>
+
+</html>

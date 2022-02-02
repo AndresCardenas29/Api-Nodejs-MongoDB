@@ -165,11 +165,16 @@ const GetCommentById = async (req, res) => {
 
 const GetCommentsTwit = async (req, res) => {
   try {
+    const { page } = req.params;
     const { idTwit } = req.body;
+
+    const limite = page*5;
 
     const getTwit = await twitsModels
       .find({ _id: idTwit })
-      .populate("comments");
+      .populate("comments")
+      .skip(limite-5)
+      .limit(limite);
 
     if (!getTwit) {
       return res.status(404).send({ status: "Comment not found" });

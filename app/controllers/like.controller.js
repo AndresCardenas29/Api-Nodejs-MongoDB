@@ -10,8 +10,12 @@ const setLike = async (req, res) => {
       return res.send({ status: false, message: "User not found" });
     }
 
-    if (await twitsModel.find({ likes: idUser })) {
-      return res.send({ status: false, message: "ya ha dado like" });
+    const getTwits = await twitsModel.find({ _id: idTwit });
+
+    const verifyLike = getTwits[0].likes.find(e => e == idUser);
+
+    if (verifyLike) {
+      return res.send({status: false, message: "ya se ha dado like"});
     }
 
     const setLike = await twitsModel.findByIdAndUpdate(
@@ -24,7 +28,7 @@ const setLike = async (req, res) => {
     );
 
     if (!setLike) {
-      return res.send({ status: false, message:"Like not update" });
+      return res.send({ status: false, message: "Like not update" });
     }
 
     return res.send(setLike);
@@ -41,8 +45,12 @@ const unlike = async (req, res) => {
       return res.send({ status: false, message: "User not found" });
     }
 
-    if (!await twitsModel.find({ likes: idUser })) {
-      return res.send({ status: false, message: "no ha dado like" });
+    const getTwits = await twitsModel.find({ _id: idTwit });
+
+    const verifyLike = getTwits[0].likes.find(e => e == idUser);
+
+    if (!verifyLike) {
+      return res.send({status: false, message: "no se ha dado like"});
     }
 
     const removeLike = await twitsModel.findByIdAndUpdate(
@@ -55,14 +63,14 @@ const unlike = async (req, res) => {
     );
 
     if (!removeLike) {
-      return res.send({ status: false, message:"Remove like not update" });
+      return res.send({ status: false, message: "Remove like not update" });
     }
 
     return res.send(removeLike);
   } catch (err) {
     httpError(res, err);
   }
-}
+};
 
 const getLikeByTwit = async (req, res) => {
   try {

@@ -12,8 +12,7 @@ const loginCtrl = async (req, res) => {
       res.status(404).send({ error: "User not found" });
     }
 
-    // const checkPassword = await compare(password, user.password);
-    const checkPassword = (await password) == user.password ? true : false;
+    const checkPassword = await compare(password, user.password);
 
     // JWT
     const tokenSession = await tokenSign(user);
@@ -21,7 +20,6 @@ const loginCtrl = async (req, res) => {
     if (checkPassword) {
       res.send({
         data: {
-          name: user.name,
           nickName: user.nickName,
           email: user.email,
         },
@@ -40,34 +38,33 @@ const loginCtrl = async (req, res) => {
 
 const registerCtrl = async (req, res) => {
   try {
-    // req = matchedData(req);
-    const { nickName } = req.body;
-    const userExist = await userModel.findOne({ nickName: nickName });
+    const { name, lastName, nickName, email, password } = req.body;
+    const userExist = await userModel.findOne({ nickName });
 
     if (userExist) {
-      return res.status(422).send({ error: "User already exists" });
+      return res.status(422).send({ error: "NickName already exists" });
     }
 
-    // const passwordHash = await encrypt(req.password);
-    // req.password = passwordHash;
-    const registerUser = await new userModel(req.body).save();
+    const emailExist = await userModel.findOne({ email });
+
+    if (emailExist) {
+      return res.status(422).send({ error: "Email already exists" });
+    }
+
+    const passwordHash = await encrypt(req.password);
     
+    const registerUser = await userModel.create({
+      name,
+      lastName,
+      nickName,
+      email,
+      password: passwordHash
+    });
+
     return res.send(registerUser);
   } catch (err) {
     return httpError(res, err);
   }
 };
 
-const returnToken = (user = {}) => {
-  try {
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-// Test
-const getTest = (req, res) => {
-  res.send("uwu");
-};
-
-module.exports = { loginCtrl, registerCtrl, getTest };
+module.exports = { loginCtrl, registerCtrl };
