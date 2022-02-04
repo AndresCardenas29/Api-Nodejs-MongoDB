@@ -51,7 +51,7 @@ const registerCtrl = async (req, res) => {
       return res.status(422).send({ error: "Email already exists" });
     }
 
-    const passwordHash = await encrypt(req.password);
+    const passwordHash = await encrypt(password);
     
     const registerUser = await userModel.create({
       name,

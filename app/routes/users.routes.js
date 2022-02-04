@@ -15,7 +15,7 @@ router.post("/", /*checkAuth,*/ checkRoleAuth(["admin"]), CreateUser);
 
 router.get("/:nickName", checkRoleAuth(["admin"]), GetUser);
 
-router.get("/", checkRoleAuth(["admin"]), GetUsers);
+router.get("/", /* checkRoleAuth(["admin"]), */ GetUsers);
 
 router.patch("/:nickName", checkRoleAuth(["admin"]), UpdateUser);
 

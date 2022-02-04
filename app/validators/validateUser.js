@@ -31,8 +31,8 @@ const validateID = [
 const validateCreate = [
   check("name").exists().not().isEmpty(),
   check("lastName").exists().not().isEmpty(),
-  check("nickName").exists().not().isLength({ min: 5 }).isEmpty(),
-  check("password").exists().not().isLength({ min: 5 }).isEmpty(),
+  check("nickName").exists().not().isEmpty(),
+  check("password").exists().not().isEmpty(),
   check("email").exists().isEmail(),
   (req, res, next) => {
     validateResult(req, res, next);
